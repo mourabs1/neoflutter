@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:neoflutter/models/contato.dart';
+import 'package:neoflutter/screens/detalhes_contato.dart';
 import 'package:neoflutter/services/contato_service.dart';
 
 import '../service_locator.dart';
 
 // Strings
 const nomeTela = 'Lista de Contatos';
+const registros = 'registros';
 
 class ListaContatos extends StatefulWidget {
   @override
@@ -24,13 +26,17 @@ class _ListaContatosState extends State<ListaContatos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: Text('$nomeTela: ${servico.max.toString()} registros')),
+      appBar: AppBar(
+          title: Text('$nomeTela: ${servico.max.toString()} $registros')),
       body: ListView.builder(
           itemCount: contatos.length,
           itemBuilder: (context, index) {
             final Contato contato = contatos[index];
-            return ItemContatos(contato);
+            return ItemContatos(
+              contato,
+              onClick: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => DetalhesContato(contato))),
+            );
           }),
     );
   }
@@ -38,13 +44,16 @@ class _ListaContatosState extends State<ListaContatos> {
 
 class ItemContatos extends StatelessWidget {
   final Contato contato;
-  ItemContatos(this.contato);
+  final Function onClick;
+
+  ItemContatos(this.contato, {@required this.onClick});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ListTile(
+          onTap: () => onClick(),
           leading: CircleAvatar(
             child: Text(contato.iniciais),
           ),

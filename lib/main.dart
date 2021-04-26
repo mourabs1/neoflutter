@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:neoflutter/screens/contato_screen.dart';
+import 'package:neoflutter/screens/lista_contato.dart';
 import 'package:neoflutter/service_locator.dart';
 
 void main() {
