@@ -1,32 +1,11 @@
 import 'dart:math';
 import 'package:neoflutter/models/contato.dart';
+import 'data.dart';
 
 class ContatoService {
-  List<Contato> contacts = [];
-  Random random = Random();
+  final List<Contato> contacts = [];
+  final Random random = Random();
   int max;
-
-  var firstNames = [
-    'Saulo',
-    'Pedro',
-    'Marcela',
-    'Reinaldo',
-    'Felipe',
-    'João',
-    'Matheus',
-    'Daniel'
-  ];
-  var lastNames = [
-    'Moura',
-    'Bueno',
-    'Albuquerque',
-    'Picone',
-    'da Silva',
-    'Andrade'
-  ];
-  var emails = ['administrativo', 'rh', 'dev', 'suporte'];
-  var domains = ['@gmail.com', '@yahoo.com', '@live.com', '@outlook.com'];
-  var cellphones = ['8197874512', '81954451236', '8195456212', '8194584512'];
 
   List<Contato> getAll() {
     max = numRandom(50, 80);
@@ -35,6 +14,7 @@ class ContatoService {
       var lastName = lastNames[random.nextInt(lastNames.length)];
       var email = emails[random.nextInt(emails.length)];
       var domain = domains[random.nextInt(domains.length)];
+      var ddd = ddds[random.nextInt(ddds.length)];
       var cellphone = cellphones[random.nextInt(cellphones.length)];
       var birthday = DateTime.utc(
           numRandom(1900, 2010), numRandom(1, 12), numRandom(1, 30));
@@ -43,7 +23,7 @@ class ContatoService {
       Contato contact = Contato()
         ..nome = '$firtName $lastName'
         ..email = '$email$domain'
-        ..telefone = cellphone
+        ..telefone = '$ddd$cellphone'
         ..nascimento = birthday
         ..peso = peso;
 
