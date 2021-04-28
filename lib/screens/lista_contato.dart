@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neoflutter/models/contato.dart';
-import 'package:neoflutter/screens/detalhes_contato.dart';
-import 'package:neoflutter/services/contato_service.dart';
-
-import '../service_locator.dart';
+import 'package:neoflutter/screens/detalhes_contato.screen.dart';
+import 'package:neoflutter/screens/lista_contatos.viewmodel.dart';
 
 // Strings
 const nomeTela = 'Lista de Contatos';
@@ -15,27 +13,23 @@ class ListaContatos extends StatefulWidget {
 }
 
 class _ListaContatosState extends State<ListaContatos> {
-  List<Contato> contatos;
-  var servico = getIt<ContatoService>();
-
-  void initState() {
-    contatos = servico.getAll();
-    super.initState();
-  }
+  final ListaContatosViewModel _viewModel = ListaContatosViewModel();
 
   @override
   Widget build(BuildContext context) {
+    _viewModel.update();
+
     return Scaffold(
       appBar: AppBar(
-          title: Text('$nomeTela: ${servico.max.toString()} $registros')),
+          title: Text('$nomeTela: ${_viewModel.minMaxLimit()} $registros')),
       body: ListView.builder(
-          itemCount: contatos.length,
+          itemCount: _viewModel.contato.length,
           itemBuilder: (context, index) {
-            final Contato contato = contatos[index];
             return ItemContatos(
-              contato,
+              _viewModel.contato[index],
               onClick: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => DetalhesContato(contato))),
+                  builder: (context) =>
+                      DetalhesContato(_viewModel.contato[index]))),
             );
           }),
     );

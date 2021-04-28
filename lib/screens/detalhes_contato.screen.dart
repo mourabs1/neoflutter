@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:neoflutter/models/contato.dart';
+import 'detalhes_contato.viewmodel.dart';
 
 class DetalhesContato extends StatefulWidget {
   final Contato contato;
-
   DetalhesContato(this.contato);
   @override
   _DetalhesContatoState createState() => _DetalhesContatoState();
 }
 
 class _DetalhesContatoState extends State<DetalhesContato> {
+  DetalhesContatoViewModel _viewModel;
+
+  @override
+  void initState() {
+    _viewModel = DetalhesContatoViewModel(widget.contato);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,14 +30,14 @@ class _DetalhesContatoState extends State<DetalhesContato> {
                 child: CircleAvatar(
                   radius: 50,
                   child: Text(
-                    widget.contato.iniciais,
+                    _viewModel.contato.iniciais,
                     style: TextStyle(fontSize: 24.0),
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-                child: Text(widget.contato.nome,
+                child: Text(_viewModel.contato.nome,
                     style:
                         TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
               ),
@@ -39,21 +47,20 @@ class _DetalhesContatoState extends State<DetalhesContato> {
                 child: Column(
                   children: [
                     ListTile(
-                      leading: Icon(Icons.email),
-                      title: Text(widget.contato.email),
-                    ),
+                        leading: Icon(Icons.email),
+                        title: Text(_viewModel.contato.email)),
                     ListTile(
                       leading: Icon(Icons.call),
-                      title: Text(widget.contato.telefone),
+                      title: Text(_viewModel.contato.telefone),
                     ),
                     ListTile(
                       leading: Icon(Icons.cake),
                       title: Text(
-                          '${widget.contato.nascimento.day}/${widget.contato.nascimento.month}/${widget.contato.nascimento.year}'),
+                          '${_viewModel.contato.nascimento.day}/${_viewModel.contato.nascimento.month}/${_viewModel.contato.nascimento.year}'),
                     ),
                     ListTile(
                       leading: Icon(Icons.integration_instructions),
-                      title: Text('${widget.contato.peso.toString()} kg'),
+                      title: Text('${_viewModel.contato.peso.toString()} kg'),
                     ),
                   ],
                 ),

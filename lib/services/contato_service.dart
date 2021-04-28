@@ -1,14 +1,15 @@
 import 'dart:math';
 import 'package:neoflutter/models/contato.dart';
-import 'data.dart';
+import '../data/data.dart';
 
 class ContatoService {
-  final List<Contato> contacts = [];
-  final Random random = Random();
   int max;
+  final Random random = Random();
 
   List<Contato> getAll() {
+    final List<Contato> contacts = [];
     max = numRandom(50, 80);
+
     for (int i = 0; i < max; i++) {
       var firtName = firstNames[random.nextInt(firstNames.length)];
       var lastName = lastNames[random.nextInt(lastNames.length)];
