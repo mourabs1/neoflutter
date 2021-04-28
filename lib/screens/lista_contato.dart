@@ -3,7 +3,6 @@ import 'package:neoflutter/models/contato.dart';
 import 'package:neoflutter/screens/detalhes_contato.screen.dart';
 import 'package:neoflutter/screens/lista_contatos.viewmodel.dart';
 
-// Strings
 const nomeTela = 'Lista de Contatos';
 const registros = 'registros';
 
@@ -14,24 +13,33 @@ class ListaContatos extends StatefulWidget {
 
 class _ListaContatosState extends State<ListaContatos> {
   final ListaContatosViewModel _viewModel = ListaContatosViewModel();
-
   @override
   Widget build(BuildContext context) {
     _viewModel.update();
 
     return Scaffold(
-      appBar: AppBar(
-          title: Text('$nomeTela: ${_viewModel.minMaxLimit()} $registros')),
-      body: ListView.builder(
-          itemCount: _viewModel.contato.length,
-          itemBuilder: (context, index) {
-            return ItemContatos(
-              _viewModel.contato[index],
-              onClick: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      DetalhesContato(_viewModel.contato[index]))),
-            );
-          }),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            flexibleSpace: const FlexibleSpaceBar(
+              title: Text('$nomeTela'),
+              background: Image(
+                  image: NetworkImage(
+                      'https://upload.wikimedia.org/wikipedia/commons/b/b7/Google_Contacts_logo.png')),
+            ),
+            expandedHeight: 200,
+          ),
+          SliverList(
+              delegate:
+                  SliverChildBuilderDelegate((BuildContext context, int index) {
+            return ItemContatos(_viewModel.contato[index],
+                onClick: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        DetalhesContato(_viewModel.contato[index]))));
+          }, childCount: _viewModel.contato.length))
+        ],
+      ),
     );
   }
 }
@@ -48,16 +56,11 @@ class ItemContatos extends StatelessWidget {
       children: [
         ListTile(
           onTap: () => onClick(),
-          leading: CircleAvatar(
-            child: Text(contato.iniciais),
-          ),
+          leading: CircleAvatar(child: Text(contato.iniciais)),
           title: Text(contato.nome),
           subtitle: Text(contato.telefone),
         ),
-        Divider(
-          height: 1,
-          thickness: 1,
-        ),
+        Divider(height: 1, thickness: 1),
       ],
     );
   }

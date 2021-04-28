@@ -11,7 +11,6 @@ class DetalhesContato extends StatefulWidget {
 
 class _DetalhesContatoState extends State<DetalhesContato> {
   DetalhesContatoViewModel _viewModel;
-
   @override
   void initState() {
     _viewModel = DetalhesContatoViewModel(widget.contato);
@@ -21,52 +20,63 @@ class _DetalhesContatoState extends State<DetalhesContato> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Detalhes do Contato')),
-        body: Center(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
-                child: CircleAvatar(
-                  radius: 50,
-                  child: Text(
-                    _viewModel.contato.iniciais,
-                    style: TextStyle(fontSize: 24.0),
+        body: CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          pinned: true,
+          flexibleSpace: const FlexibleSpaceBar(
+            title: Text('Detalhes do Contato'),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Center(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
+                  child: CircleAvatar(
+                    radius: 50,
+                    child: Text(
+                      _viewModel.contato.iniciais,
+                      style: TextStyle(fontSize: 24.0),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-                child: Text(_viewModel.contato.nome,
-                    style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-              ),
-              Divider(height: 1, thickness: 1, indent: 25, endIndent: 25),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    ListTile(
-                        leading: Icon(Icons.email),
-                        title: Text(_viewModel.contato.email)),
-                    ListTile(
-                      leading: Icon(Icons.call),
-                      title: Text(_viewModel.contato.telefone),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.cake),
-                      title: Text(
-                          '${_viewModel.contato.nascimento.day}/${_viewModel.contato.nascimento.month}/${_viewModel.contato.nascimento.year}'),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.integration_instructions),
-                      title: Text('${_viewModel.contato.peso.toString()} kg'),
-                    ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+                  child: Text(_viewModel.contato.nome,
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold)),
                 ),
-              )
-            ],
+                Divider(height: 1, thickness: 1, indent: 25, endIndent: 25),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      ListTile(
+                          leading: Icon(Icons.email),
+                          title: Text(_viewModel.contato.email)),
+                      ListTile(
+                        leading: Icon(Icons.call),
+                        title: Text(_viewModel.contato.telefone),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.cake),
+                        title: Text(
+                            '${_viewModel.contato.nascimento.day}/${_viewModel.contato.nascimento.month}/${_viewModel.contato.nascimento.year}'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.integration_instructions),
+                        title: Text('${_viewModel.contato.peso.toString()} kg'),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
-        ));
+        )
+      ],
+    ));
   }
 }
