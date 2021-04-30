@@ -4,11 +4,11 @@ import '../data/data.dart';
 
 class ContatoService {
   int max;
+  final List<Contato> contacts = [];
   final Random random = Random();
 
   List<Contato> getAll() {
-    final List<Contato> contacts = [];
-    max = numRandom(50, 80);
+    max = numRandom(2, 5);
 
     for (int i = 0; i < max; i++) {
       var firtName = firstNames[random.nextInt(firstNames.length)];
@@ -31,6 +31,14 @@ class ContatoService {
       contacts.add(contact);
     }
     return contacts;
+  }
+
+  List<Contato> getAllCreated() {
+    return contacts;
+  }
+
+  void insert(Contato contato) {
+    contacts.add(contato);
   }
 
   int numRandom(int min, int max) {

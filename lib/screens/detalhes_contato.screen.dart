@@ -25,7 +25,7 @@ class _DetalhesContatoState extends State<DetalhesContato> {
         SliverAppBar(
           pinned: true,
           flexibleSpace: const FlexibleSpaceBar(
-            title: Text('Detalhes do Contato'),
+            title: Text('Detalhes do contato'),
           ),
         ),
         SliverToBoxAdapter(

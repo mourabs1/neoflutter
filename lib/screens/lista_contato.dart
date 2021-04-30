@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:neoflutter/models/contato.dart';
 import 'package:neoflutter/screens/detalhes_contato.screen.dart';
+import 'package:neoflutter/screens/formulario_contato.dart';
 import 'package:neoflutter/screens/lista_contatos.viewmodel.dart';
 
 const nomeTela = 'Lista de Contatos';
 const registros = 'registros';
+const urlImage =
+    'https://upload.wikimedia.org/wikipedia/commons/b/b7/Google_Contacts_logo.png';
 
 class ListaContatos extends StatefulWidget {
   @override
@@ -13,21 +16,23 @@ class ListaContatos extends StatefulWidget {
 
 class _ListaContatosState extends State<ListaContatos> {
   final ListaContatosViewModel _viewModel = ListaContatosViewModel();
+
+  @override
+  void initState() {
+    _viewModel.update();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    _viewModel.update();
-
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
             pinned: true,
             flexibleSpace: const FlexibleSpaceBar(
-              title: Text('$nomeTela'),
-              background: Image(
-                  image: NetworkImage(
-                      'https://upload.wikimedia.org/wikipedia/commons/b/b7/Google_Contacts_logo.png')),
-            ),
+                title: Text('$nomeTela'),
+                background: Image(image: NetworkImage(urlImage))),
             expandedHeight: 200,
           ),
           SliverList(
@@ -40,7 +45,17 @@ class _ListaContatosState extends State<ListaContatos> {
           }, childCount: _viewModel.contato.length))
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => irParaFormulario(context),
+        child: Icon(Icons.add),
+      ),
     );
+  }
+
+  Future<void> irParaFormulario(BuildContext context) async {
+    var contato = await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => ContatoFormulario()));
+    contato != null ? setState(() => _viewModel.updateCreate()) : Container();
   }
 }
 
