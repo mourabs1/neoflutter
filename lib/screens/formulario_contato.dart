@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:neoflutter/screens/formulario_contato.viewmodel.dart';
 
 class ContatoFormulario extends StatefulWidget {
@@ -20,6 +21,8 @@ class _ContatoFormularioState extends State<ContatoFormulario> {
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
@@ -32,16 +35,25 @@ class _ContatoFormularioState extends State<ContatoFormulario> {
           ),
           SliverToBoxAdapter(
             child: Form(
+              key: _formKey,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: <Widget>[
                     TextFormField(
+                      inputFormatters: [LengthLimitingTextInputFormatter(100)],
                       controller: _controladorNome,
+                      validator: (_controladorNome) {
+                        return _viewModel.getNome(_controladorNome);
+                      },
                       decoration: InputDecoration(labelText: 'Nome'),
                     ),
                     TextFormField(
+                      inputFormatters: [LengthLimitingTextInputFormatter(100)],
                       controller: _controladorEmail,
+                      validator: (_controladorEmail) {
+                        return _viewModel.getEmail(_controladorEmail);
+                      },
                       decoration: InputDecoration(labelText: 'E-mail'),
                     ),
                     TextFormField(
@@ -50,6 +62,7 @@ class _ContatoFormularioState extends State<ContatoFormulario> {
                       decoration: InputDecoration(labelText: 'Nascimento'),
                     ),
                     TextFormField(
+                      inputFormatters: [LengthLimitingTextInputFormatter(100)],
                       keyboardType: TextInputType.number,
                       controller: _controladorTelefone,
                       validator: (_controladorTelefone) {
@@ -60,6 +73,9 @@ class _ContatoFormularioState extends State<ContatoFormulario> {
                     TextFormField(
                       keyboardType: TextInputType.number,
                       controller: _controladorPeso,
+                      validator: (_controladorPeso) {
+                        return _viewModel.getPeso(_controladorPeso);
+                      },
                       decoration: InputDecoration(labelText: 'Peso'),
                     ),
                     TextButton(
@@ -69,7 +85,9 @@ class _ContatoFormularioState extends State<ContatoFormulario> {
                           _viewModel.telefone = _controladorTelefone.text;
                           _viewModel.nascimento = DateTime.now();
                           _viewModel.peso = int.tryParse(_controladorPeso.text);
-                          Navigator.pop(context, _viewModel.save());
+                          if (_formKey.currentState.validate()) {
+                            Navigator.pop(context, _viewModel.save());
+                          }
                         },
                         child: Text('CONFIRMAR'))
                   ],

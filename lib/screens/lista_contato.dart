@@ -46,13 +46,13 @@ class _ListaContatosState extends State<ListaContatos> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => irParaFormulario(context),
+        onPressed: () => formularioContato(context),
         child: Icon(Icons.add),
       ),
     );
   }
 
-  Future<void> irParaFormulario(BuildContext context) async {
+  Future<void> formularioContato(BuildContext context) async {
     var contato = await Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => ContatoFormulario()));
     contato != null ? setState(() => _viewModel.updateCreate()) : Container();
