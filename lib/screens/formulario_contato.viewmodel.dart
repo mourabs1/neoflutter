@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:neoflutter/models/contato.dart';
 import 'package:neoflutter/services/contato_service.dart';
 import '../service_locator.dart';
@@ -20,13 +19,16 @@ class FormularioContatoViewModel {
   }
 
   String getNome(String nome) {
-    return nullEmpty(nome, 'Insira um nome');
+    if (nome == null || nome.isEmpty) {
+      return 'Insira um nome';
+    }
+    return null;
   }
 
   String getEmail(String email) {
     const pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
     if (email == null || email.isEmpty) {
-      return 'Insira um e-mail';
+      return null;
     } else if (!RegExp(pattern).hasMatch(email)) {
       return 'E-mail inválido';
     }
@@ -45,12 +47,18 @@ class FormularioContatoViewModel {
     return null;
   }
 
-  String getTelefone(String telefone) {}
-
-  String nullEmpty(String e, String texto) {
-    if (e == null || e.isEmpty) {
-      return texto;
+  String getTelefone(String telefone) {
+    const pattern = r'^\(?[1-9]{2}\)? ?(?:[2-8]|9[1-9])[0-9]{3}\-?[0-9]{4}$';
+    if (telefone == null || telefone.isEmpty) {
+      return null;
+    } else if (!RegExp(pattern).hasMatch(telefone)) {
+      return 'Telefone inválido';
     }
     return null;
+  }
+
+  String getNascimento(DateTime nascimento) {
+    var aniversario = nascimento.toString();
+    return '$aniversario';
   }
 }

@@ -14,7 +14,6 @@ class _ContatoFormularioState extends State<ContatoFormulario> {
   final TextEditingController _controladorNome = TextEditingController();
   final TextEditingController _controladorEmail = TextEditingController();
   final TextEditingController _controladorTelefone = TextEditingController();
-  final TextEditingController _controladorNascimento = TextEditingController();
   final TextEditingController _controladorPeso = TextEditingController();
 
   DateTime pickedDate;
@@ -57,9 +56,9 @@ class _ContatoFormularioState extends State<ContatoFormulario> {
                       decoration: InputDecoration(labelText: 'E-mail'),
                     ),
                     TextFormField(
-                      keyboardType: TextInputType.datetime,
-                      controller: _controladorNascimento,
-                      decoration: InputDecoration(labelText: 'Nascimento'),
+                      readOnly: true,
+                      onTap: () => _pickDate(),
+                      decoration: InputDecoration(labelText: '${getText()}'),
                     ),
                     TextFormField(
                       inputFormatters: [LengthLimitingTextInputFormatter(100)],
@@ -83,7 +82,7 @@ class _ContatoFormularioState extends State<ContatoFormulario> {
                           _viewModel.nome = _controladorNome.text;
                           _viewModel.email = _controladorEmail.text;
                           _viewModel.telefone = _controladorTelefone.text;
-                          _viewModel.nascimento = DateTime.now();
+                          _viewModel.nascimento = pickedDate;
                           _viewModel.peso = int.tryParse(_controladorPeso.text);
                           if (_formKey.currentState.validate()) {
                             Navigator.pop(context, _viewModel.save());
@@ -100,26 +99,26 @@ class _ContatoFormularioState extends State<ContatoFormulario> {
     );
   }
 
-  // _pickDate() async {
-  //   final dataInicial = DateTime.now();
-  //   final DateTime date = await showDatePicker(
-  //       context: context,
-  //       initialDate: dataInicial,
-  //       firstDate: DateTime(DateTime.now().year - 5),
-  //       lastDate: DateTime(DateTime.now().year + 5));
+  _pickDate() async {
+    final dateToday = DateTime.now();
+    final DateTime date = await showDatePicker(
+        context: context,
+        initialDate: dateToday,
+        firstDate: DateTime(DateTime.now().year - 200),
+        lastDate: dateToday);
 
-  //   if (date != null) {
-  //     setState(() {
-  //       pickedDate = date;
-  //     });
-  //   }
-  // }
+    if (date != null) {
+      setState(() {
+        pickedDate = date;
+      });
+    }
+  }
 
-  // String getText() {
-  //   if (pickedDate != null) {
-  //     return '${pickedDate.day}/${pickedDate.month}/${pickedDate.year}';
-  //   } else {
-  //     return 'Nascimento';
-  //   }
-  // }
+  String getText() {
+    if (pickedDate != null) {
+      return '${pickedDate.day}/${pickedDate.month}/${pickedDate.year}';
+    } else {
+      return 'Nascimento';
+    }
+  }
 }

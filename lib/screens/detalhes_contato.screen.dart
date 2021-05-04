@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neoflutter/models/contato.dart';
 import 'detalhes_contato.viewmodel.dart';
+import 'package:intl/intl.dart';
 
 class DetalhesContato extends StatefulWidget {
   final Contato contato;
@@ -55,19 +56,21 @@ class _DetalhesContatoState extends State<DetalhesContato> {
                     children: [
                       ListTile(
                           leading: Icon(Icons.email),
-                          title: Text(_viewModel.contato.email)),
+                          title: Text(
+                              stringNullOrEmpty(_viewModel.contato.email))),
                       ListTile(
                         leading: Icon(Icons.call),
-                        title: Text(_viewModel.contato.telefone),
+                        title: Text(
+                            stringNullOrEmpty(_viewModel.contato.telefone)),
                       ),
                       ListTile(
                         leading: Icon(Icons.cake),
                         title: Text(
-                            '${_viewModel.contato.nascimento.day}/${_viewModel.contato.nascimento.month}/${_viewModel.contato.nascimento.year}'),
+                            '${dateFormatted(_viewModel.contato.nascimento)}'),
                       ),
                       ListTile(
                         leading: Icon(Icons.integration_instructions),
-                        title: Text('${_viewModel.contato.peso.toString()} kg'),
+                        title: Text(intNullOrEmpty(_viewModel.contato.peso)),
                       ),
                     ],
                   ),
@@ -78,5 +81,30 @@ class _DetalhesContatoState extends State<DetalhesContato> {
         )
       ],
     ));
+  }
+
+  dateFormatted(DateTime date) {
+    if (date != null) {
+      final String formatted = DateFormat('dd/MM/yyyy').format(date);
+      return formatted;
+    } else {
+      return 'Sem dados';
+    }
+  }
+
+  String intNullOrEmpty(int valor) {
+    if (valor == null) {
+      return 'Sem dados';
+    } else {
+      return '$valor kg';
+    }
+  }
+
+  String stringNullOrEmpty(String texto) {
+    if (texto == null || texto.isEmpty) {
+      return 'Sem dados';
+    } else {
+      return '$texto';
+    }
   }
 }
